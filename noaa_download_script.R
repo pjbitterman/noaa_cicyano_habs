@@ -9,18 +9,18 @@ champ.dltarget <- fs::fs_path("./downloads/champ")
 erie.dltarget <- fs::fs_path("./downloads/erie")
 
 
-image_dl_and_org <- function(noaaUrl, downloadUrl){
-  
-  hab.html <-read_html(noaaUrl)
+image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
+ 
+  hab.html <- read_html(noaaUrl)
   
   #gets links
   links.all <- hab.html %>%
     html_nodes(".onecol > a") %>%
     html_attr('href') 
   
-  # the readme files have two links each, so clean up (get rid of 4)
+  # get rid of readme and other files (like legend)
   links.cleaned <- links.all %>% 
-    tail(length(.) - 4)
+    tail(length(.) - lines_to_skip)
   
   # gets names
   names.all <- hab.html %>% 
@@ -28,7 +28,7 @@ image_dl_and_org <- function(noaaUrl, downloadUrl){
     html_text() 
   
   # the parsing of text has both readmes and a "names" header, so clean up
-  # (get rid of 3)
+  # (get rid of first 3) - this is true for both Erie and Champlain
   names.cleaned <- names.all %>%
     tail(length(.) - 3) %>% as.character()
   
@@ -82,6 +82,6 @@ image_dl_and_org <- function(noaaUrl, downloadUrl){
 }
 
 
-image_dl_and_org(champ.url, champ.dltarget)
-image_dl_and_org(erie.url, erie.dltarget)
+image_dl_and_org(champ.url, champ.dltarget, lines_to_skip = 4) 
+image_dl_and_org(erie.url, erie.dltarget, lines_to_skip = 3)
 

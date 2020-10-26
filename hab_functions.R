@@ -99,7 +99,8 @@ calc_area_by_thresholds <- function(in.raster, boundingPolygon.path,
   # turn the st points into spatial points (makes filtering and counting easier)
   points.intersection <- as(in.raster,"SpatialPoints") 
   # get the dn.values
-  points.values <- data.frame(dn.val = raster::extract(in.raster, points.intersection))
+  points.values <- data.frame(dn.val = raster::extract(in.raster, 
+                                                       points.intersection))
   # assign extracted vals to the points
   points.intersection$dn.val <- points.values
   
@@ -112,14 +113,14 @@ calc_area_by_thresholds <- function(in.raster, boundingPolygon.path,
   if(lake_transform == "champlain_olci"){
     
     # valid points: 1-249 is valid data
-    # as of 2019-02-01
+    # as of 2019-02-01 metadata
     points_base <- points.int.sf %>% 
       mutate(index = transform_champlain_olci(dn.val)) 
 
   } else if(lake_transform == "erie_olci"){
     
     # valid points: 2-249 is valid data
-    # as of 2019-02-01
+    # as of 2019-02-01 metadata
     points_base <- points.int.sf %>% 
       mutate(index = transform_erie_olci(dn.val))
 
@@ -168,18 +169,26 @@ calc_area_by_thresholds <- function(in.raster, boundingPolygon.path,
     
     toReturn <- data.frame(prop_in_range, area_m2_in_range, 
                            start_date, end_date) %>%
-      magrittr::set_colnames(c("prop_in_range", "area_m2_in_range", "start_date", "end_date"))
+      magrittr::set_colnames(c("prop_in_range", "area_m2_in_range", 
+                               "start_date", "end_date"))
   }
   # can't get map_df to work right now (returns 0 rows), so do manually
   
-  area_low <- calculate_area_pixels(points_in_low) %>% mutate(whoCat = "low")
-  area_mod <- calculate_area_pixels(points_in_mod) %>% mutate(whoCat = "moderate")
-  area_high <- calculate_area_pixels(points_in_high) %>% mutate(whoCat = "high")
-  area_veryhigh <- calculate_area_pixels(points_in_veryhigh) %>% mutate(whoCat = "very_high")
+  area_low <- calculate_area_pixels(points_in_low) %>% 
+    mutate(whoCat = "low")
+  area_mod <- calculate_area_pixels(points_in_mod) %>% 
+    mutate(whoCat = "moderate")
+  area_high <- calculate_area_pixels(points_in_high) %>% 
+    mutate(whoCat = "high")
+  area_veryhigh <- calculate_area_pixels(points_in_veryhigh) %>% 
+    mutate(whoCat = "very_high")
   
   # combine and relevel the category factor
   all_areas <- bind_rows(area_low, area_mod, area_high, area_veryhigh) %>% 
-    mutate(whoCat = forcats::fct_relevel(whoCat, c("very_high", "high", "moderate", "low")))
+    mutate(whoCat = forcats::fct_relevel(whoCat, c("very_high", 
+                                                   "high", 
+                                                   "moderate", 
+                                                   "low")))
 }
 
 # extract values for points of interest
@@ -266,7 +275,8 @@ calc_distance_to_pois <- function(in.raster, boundingPolygon.path,
   # turn the st points into spatial points (makes filtering and counting easier)
   points.intersection <- as(in.raster,"SpatialPoints") 
   # get the dn.values
-  points.values <- data.frame(dn.val = raster::extract(in.raster, points.intersection))
+  points.values <- data.frame(dn.val = raster::extract(in.raster, 
+                                                       points.intersection))
   # assign extracted vals to the points
   points.intersection$dn.val <- points.values
   
@@ -351,14 +361,22 @@ calc_distance_to_pois <- function(in.raster, boundingPolygon.path,
   }
   
   # can't get map_df to work right now (returns 0 rows), so do manually
-  dist_low <- calculate_distance(poi.subset, points_in_low) %>% mutate(whoCat = "low")
-  dist_mod <- calculate_distance(poi.subset, points_in_mod) %>% mutate(whoCat = "moderate")
-  dist_high <- calculate_distance(poi.subset, points_in_high) %>% mutate(whoCat = "high")
-  dist_veryhigh <- calculate_distance(poi.subset, points_in_veryhigh) %>% mutate(whoCat = "very_high")
+  dist_low <- calculate_distance(poi.subset, points_in_low) %>% 
+    mutate(whoCat = "low")
+  dist_mod <- calculate_distance(poi.subset, points_in_mod) %>% 
+    mutate(whoCat = "moderate")
+  dist_high <- calculate_distance(poi.subset, points_in_high) %>% 
+    mutate(whoCat = "high")
+  dist_veryhigh <- calculate_distance(poi.subset, points_in_veryhigh) %>% 
+    mutate(whoCat = "very_high")
   
   # combine and relevel the category factor
   all_dists <- bind_rows(dist_low, dist_mod, dist_high, dist_veryhigh) %>% 
-    mutate(whoCat = forcats::fct_relevel(whoCat, c("very_high", "high", "moderate", "low"))) %>%
+    mutate(whoCat = forcats::fct_relevel(whoCat, 
+                                         c("very_high", 
+                                           "high", 
+                                           "moderate", 
+                                           "low"))) %>%
     mutate(start_date = start_date,
            end_date = end_date)    
 }
@@ -380,13 +398,14 @@ calc_ciValueInArea <- function(in.raster, boundingPolygon.path,
   
   
   # raster properties
-  raster.res <- res(in.raster)
+  raster.res <- res(in.raster) #raster resolution, assume meters
   pixel.area.m2 <- raster.res[1] * raster.res[2]
   
   # turn the st points into spatial points (makes filtering and counting easier)
   points.intersection <- as(in.raster,"SpatialPoints") 
   # get the dn.values
-  points.values <- data.frame(dn.val = raster::extract(in.raster, points.intersection))
+  points.values <- data.frame(dn.val = raster::extract(in.raster, 
+                                                       points.intersection))
   # assign extracted vals to the points
   points.intersection$dn.val <- points.values
   
@@ -442,7 +461,7 @@ transform_erie_olci <- function(x){
 }
 
 # NOAA transform for CHAMPLAIN data
-# valid as of 2019-02-01
+# valid as of 2019-02-01 metadata
 transform_champlain_olci <- function(x){
   
   # valid points: 2-249 is valid data
@@ -452,7 +471,7 @@ transform_champlain_olci <- function(x){
 }
 
 # NOAA transform for Erie MODIS data
-# valid as of 2019-03-22
+# valid as of 2019-03-22 metadata
 # same as erie OLCI transform
 transform_erie_modis <- function(x){
   
