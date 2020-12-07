@@ -82,6 +82,7 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
 }
 
 
+### download them ----
 image_dl_and_org(champ.url, champ.dltarget, lines_to_skip = 4) 
 image_dl_and_org(erie.url, erie.dltarget, lines_to_skip = 3)
 
