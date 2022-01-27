@@ -67,7 +67,25 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
     dl_images <- function(link, fname, basepath){
       dltarget <- paste0(basepath, "/", fname)
       if(!fs::file_exists(dltarget)){
-        downloader::download(link, dltarget)
+        
+        tryCatch(
+          expr = {
+            downloader::download(link, dltarget)
+            message(paste0("Successfully downloaded "), link)
+          },
+          error = function(e){
+            message(paste0("!!ERROR!!, COULD NOT DOWNLOAD ", link))
+            print(e)
+          },
+          warning = function(w){
+            message('Caught a warning!')
+            print(w)
+          },
+          finally = {
+            #message('All done, quitting.')
+          }
+        )   
+        
       }
       else{
         print("file exists, skipping")
