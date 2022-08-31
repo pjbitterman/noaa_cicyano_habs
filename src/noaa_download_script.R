@@ -4,8 +4,11 @@ library(rvest)
 
 
 # URLs on the NOAA HABS Explorer page
-champ.url <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=djFYWEE0NURTMllpTkN5VUVzdmtIcW5YWE83TTdDRzg2VldJWTFoc3JQdnBpckZ1K2FyTHgzUjUxSFNlOWlVZw==&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId0hBbkVjOGkrTnJJMXR3WmtJbGJFeUkyUTY2OCtjUmpSUEFyWXpNWEIzZlc=&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
-erie.url <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=eXhJRlJpQjQ0NnNyYmQwL21vSFpjWWxoeWtud2l3YmhYSlhBUjM4bTM2QT0=&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId04wdC8rNVdEdEdKTS9CQ3pEY2I0ZDg9&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
+champ.url.old <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=djFYWEE0NURTMllpTkN5VUVzdmtIcW5YWE83TTdDRzg2VldJWTFoc3JQdnBpckZ1K2FyTHgzUjUxSFNlOWlVZw==&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId0hBbkVjOGkrTnJJMXR3WmtJbGJFeUkyUTY2OCtjUmpSUEFyWXpNWEIzZlc=&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
+champ.url.new <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=djFYWEE0NURTMllpTkN5VUVzdmtIbGxQalBCYVd5REsvL0lVYzNJaVF2NlY1a1F2TS9tblJyWjZxdnV4NVE3eQ==&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId0hBbkVjOGkrTnJJMXR3WmtJbGJFeUx4OUVOMlc2TEV4ckdQSXZhQWRZQXQ=&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
+erie.url.older <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=eXhJRlJpQjQ0NnNyYmQwL21vSFpjWWxoeWtud2l3YmhYSlhBUjM4bTM2QT0=&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId04wdC8rNVdEdEdKTS9CQ3pEY2I0ZDg9&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
+erie.url.old <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=eXhJRlJpQjQ0NnNyYmQwL21vSFpjWWxoeWtud2l3YmhYSlhBUjM4bTM2QT0=&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId04wdC8rNVdEdEdKTS9CQ3pEY2I0ZDg9&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
+erie.url <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=ejRmaWZVOWVueEJoY1B6VmovUTN5Tm5ydjhjNFN1RXRqZWNnclNPN1J4cz0=&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId0dZY2I0YmRsVXgzeEcwR3RpYnlRdW9VdGduZ3hyMkNSaFdBYXFnbWxOZGw=&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
 ches.url <- "https://products.coastalscience.noaa.gov/habs_explorer/index.php?path=bVoraGxra3BOd0pQdnhnL21jd0QxL1hGRjE5QWRQaTVxWVI5VTlPaDlKbz0=&uri=VWtuM1UzbVNVN0RsZzJMeTJvNlNpM29OalF0WTFQQjVZVnpuS3o5bnh1Ym0vYWhtWEh4ck1hREVUamE4SDZ0M0JnSnNMaHk4U2YyaTc0R04zM2ZId0tDRGEwSjVPOVVQSjhjWXF4Z0g1Y0QxQlNaTGVHWHpKVXYxRnlNNnQ1bXA=&type=bllEUXA3TmhSK21RVDlqbFYxMmEwdz09"
 
 # local directories to download to
@@ -15,9 +18,22 @@ ches.dltarget <- fs::fs_path("./downloads/chesapeake")
 
 # function to batch download and sort downloaded images
 # automatically skips previously downloaded files
-image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
- 
+image_dl_and_org <- function(noaaUrl, downloadUrl){
+  
   hab.html <- read_html(noaaUrl)
+
+  # gets names
+  names.all <- hab.html %>% 
+    html_nodes(".onecol") %>%
+    html_text() 
+  
+  # the parsing of text has both readmes and a "names" header, so clean up
+  # and retain only those with the 'sentinel-3' string in their name
+  names.cleaned <- names.all %>%
+    str_subset(., "sentinel-3") %>% 
+    as.character() %>%
+    stringr::str_trim(., "left")
+
   
   #gets links
   links.all <- hab.html %>%
@@ -25,23 +41,26 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
     html_attr('href') 
   
   # get rid of readme and other files (like legend)
+  # ensure we have the same number of names and links
   links.cleaned <- links.all %>% 
-    tail(length(.) - lines_to_skip)
+    tail(length(names.cleaned))
   
-  # gets names
-  names.all <- hab.html %>% 
-    html_nodes(".onecol") %>%
-    html_text() 
-  
-  # the parsing of text has both readmes and a "names" header, so clean up
-  # (get rid of first n, where n = 'lines_to_skip' parameter)
-  names.cleaned <- names.all %>%
-    tail(length(.) - 3) %>% as.character()
   
   # put them in a data.frame and use regex to extract 
   # the category (e.g., CI, CIcyano) of image
-  df <- data.frame(links.cleaned, names.cleaned) %>%
-    mutate(img.type = stringr::str_match(names.cleaned, "(_|-)[0-9]\\.(.*?)\\.tif")[,3])
+  # NOAA keeps changing file name patterns and breaking regex.
+  # this is less elegant (and i'm sure there's a way to nest the expressions),
+  # but it works and should hopefully be more generalizable
+  fun.extract.imgtype <- function(instring){
+    toReturn <-str_extract(instring, "(.*(?=\\.tif))") %>% 
+      str_extract(., "[^\\.]+$")
+    return(toReturn)
+  }
+  
+
+  df <- data.frame(link = links.cleaned, fname = names.cleaned) %>%
+    mutate(img.type = fun.extract.imgtype(fname))
+  
   
   i.cats <- df$img.type %>% unique()
   
@@ -51,7 +70,7 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
   
   # outer function to get just the data we want
   dl_chunks <- function(image.category) {
-    
+
     # create new subdirectory
     subdir <- file.path(downloadUrl, image.category) %>%
       fs::as_fs_path()
@@ -93,8 +112,8 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
     }
     
     # put them in a list
-    flist <- list(as.character(chunkToDl$links.cleaned), 
-                  as.character(chunkToDl$names.cleaned), subdir)
+    flist <- list(as.character(chunkToDl$link), 
+                  as.character(chunkToDl$fname), subdir)
 
     # download them all
     flist %>% pmap(dl_images)
@@ -107,8 +126,8 @@ image_dl_and_org <- function(noaaUrl, downloadUrl, lines_to_skip){
 
 
 ### download them ----
-image_dl_and_org(champ.url, champ.dltarget, lines_to_skip = 4) 
-image_dl_and_org(erie.url, erie.dltarget, lines_to_skip = 3)
-image_dl_and_org(ches.url, ches.dltarget, lines_to_skip = 3)
+image_dl_and_org(champ.url.new, champ.dltarget) 
+image_dl_and_org(erie.url, erie.dltarget)
+image_dl_and_org(ches.url, ches.dltarget)
 
 
