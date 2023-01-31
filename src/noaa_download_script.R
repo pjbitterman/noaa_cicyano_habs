@@ -91,6 +91,7 @@ image_dl_and_org <- function(noaaUrl, downloadUrl){
           expr = {
             downloader::download(link, dltarget)
             message(paste0("Successfully downloaded "), link)
+            
           },
           error = function(e){
             message(paste0("!!ERROR!!, COULD NOT DOWNLOAD ", link))
